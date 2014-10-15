@@ -1,0 +1,17 @@
+ext {
+    scalaBase = scalaBaseVersion(project.scalaVersion)
+}
+
+List splitScalaVersion(String version) {
+    try {
+        def matcher = (version =~ /^(\d+).(\d+)(.(\d+)([-\.](.+))?)?$/)
+        [matcher[0][1], matcher[0][2], matcher[0][4], matcher[0][6]]
+    } catch (IndexOutOfBoundsException ignored) {
+        throw new GradleException("'$version' is not a valid Scala version")
+    }
+}
+
+String scalaBaseVersion(String version) {
+    def (macro, minor, micro, revision) = splitScalaVersion(version)
+    "${macro}.$minor"
+}

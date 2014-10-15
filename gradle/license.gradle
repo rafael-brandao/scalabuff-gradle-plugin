@@ -1,0 +1,10 @@
+license {
+    ext.year = Calendar.instance.get(Calendar.YEAR)
+    ext.name = 'Rafael Brandão'
+    ext.email = 'rafa.bra@gmail.com'
+
+    header rootProject.file('gradle/code-quality/HEADER')
+    strictCheck true
+}
+
+classes.dependsOn licenseFormat
