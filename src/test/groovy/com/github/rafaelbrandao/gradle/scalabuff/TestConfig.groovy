@@ -8,12 +8,12 @@
 package com.github.rafaelbrandao.gradle.scalabuff
 
 class TestConfig {
-    public static final String SCALA_BASE_VERSION
+  public static final String SCALA_BASE_VERSION
 
-    static {
-        def classLoader = Thread.currentThread().contextClassLoader
-        InputStream inputStream = classLoader.getResourceAsStream('META-INF/test-runtime-config.groovy')
-        def config = new ConfigSlurper().parse(inputStream.text)
-        SCALA_BASE_VERSION = config.scala.base.version
-    }
+  static {
+    def classLoader = Thread.currentThread().contextClassLoader
+    InputStream inputStream = classLoader.getResourceAsStream('META-INF/test-runtime-config.groovy')
+    def config = new ConfigSlurper().parse(inputStream.text)
+    SCALA_BASE_VERSION = config.scala.base.version
+  }
 }

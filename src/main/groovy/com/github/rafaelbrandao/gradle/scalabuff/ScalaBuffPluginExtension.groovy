@@ -12,22 +12,22 @@ import org.gradle.api.NamedDomainObjectContainer
 
 class ScalaBuffPluginExtension {
 
-    static final String NAME = 'scalabuff'
+  static final String NAME = 'scalabuff'
 
-    File outputDir;
-    File generatedSourcesDir;
-    File generatedResourcesDir;
+  File outputDir;
+  File generatedSourcesDir;
+  File generatedResourcesDir;
 
-    // If set to true, remove all sourceSets but the generated scalabuff one.
-    boolean generateDescriptor
+  // If set to true, remove all sourceSets but the generated scalabuff one.
+  boolean generateDescriptor
 
-    final NamedDomainObjectContainer<ScalaBuffSourceSet> sourceSets
+  final NamedDomainObjectContainer<ScalaBuffSourceSet> sourceSets
 
-    ScalaBuffPluginExtension(NamedDomainObjectContainer<ScalaBuffSourceSet> sourceSets) {
-        this.sourceSets = sourceSets
-    }
+  ScalaBuffPluginExtension(NamedDomainObjectContainer<ScalaBuffSourceSet> sourceSets) {
+    this.sourceSets = sourceSets
+  }
 
-    def sourceSets(Closure closure) {
-        sourceSets.configure(closure)
-    }
+  def sourceSets(Closure closure) {
+    sourceSets.configure(closure)
+  }
 }

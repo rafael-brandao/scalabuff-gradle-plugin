@@ -12,10 +12,9 @@ import org.gradle.api.tasks.TaskAction
 
 class ScalaBuffCleanTask extends DefaultTask {
 
-    @TaskAction
-    def cleanProto() {
-        project.scalabuff.outputDir.deleteDir()
-    }
-
+  @TaskAction
+  def cleanProto() {
+    project.scalabuff.outputDir.deleteDir()
+  }
 
 }

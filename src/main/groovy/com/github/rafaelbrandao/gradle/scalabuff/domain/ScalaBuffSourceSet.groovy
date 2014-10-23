@@ -9,11 +9,11 @@ package com.github.rafaelbrandao.gradle.scalabuff.domain
 
 class ScalaBuffSourceSet {
 
-    final String name
-    String srcDir
+  final String name
+  String srcDir
 
-    ScalaBuffSourceSet(String name) {
-        this.name = name
-    }
+  ScalaBuffSourceSet(String name) {
+    this.name = name
+  }
 
 }

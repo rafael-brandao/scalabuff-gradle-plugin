@@ -3,94 +3,94 @@ import groovy.xml.QName
 apply plugin: 'maven-publish'
 
 def basePom = {
-    resolveStrategy = Closure.DELEGATE_FIRST
-    name 'ScalaBuff Gradle Plugin'
-    description project.description
+  resolveStrategy = Closure.DELEGATE_FIRST
+  name 'ScalaBuff Gradle Plugin'
+  description project.description
+  url 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
+  developers {
+    developer {
+      id 'rafael-brandao'
+      name 'Rafael Brandão'
+      email 'rafa.bra@gmail.com'
+    }
+  }
+  licenses {
+    license {
+      name 'Mozilla Public License, Version 2.0'
+      url 'https://www.mozilla.org/MPL/2.0/'
+      distribution 'repo'
+    }
+  }
+  scm {
     url 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
-    developers {
-        developer {
-            id 'rafael-brandao'
-            name 'Rafael Brandão'
-            email 'rafa.bra@gmail.com'
-        }
-    }
-    licenses {
-        license {
-            name 'Mozilla Public License, Version 2.0'
-            url 'https://www.mozilla.org/MPL/2.0/'
-            distribution 'repo'
-        }
-    }
-    scm {
-        url 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
-        connection 'scm:git:git://github.com/rafael-brandao/scalabuff-gradle-plugin.git'
-        developerConnection 'scm:git:ssh://git@github.com/rafael-brandao/scalabuff-gradle-plugin.git'
-    }
-    issueManagement {
-        system 'GitHub'
-        url 'https://github.com/rafael-brandao/scalabuff-gradle-plugin/issues'
-    }
+    connection 'scm:git:git://github.com/rafael-brandao/scalabuff-gradle-plugin.git'
+    developerConnection 'scm:git:ssh://git@github.com/rafael-brandao/scalabuff-gradle-plugin.git'
+  }
+  issueManagement {
+    system 'GitHub'
+    url 'https://github.com/rafael-brandao/scalabuff-gradle-plugin/issues'
+  }
 }
 
 publishing {
-    publications {
-        maven(MavenPublication) {
-            artifactId project.artifactId
+  publications {
+    maven(MavenPublication) {
+      artifactId project.artifactId
 
-            from components.java
+      from components.java
 
-            artifact sourcesJar {
-                classifier "sources"
-            }
+      artifact sourcesJar {
+        classifier "sources"
+      }
 
-            pom.withXml {
-                asNode().getAt(new QName('http://maven.apache.org/POM/4.0.0', 'version')) + basePom
-            }
-        }
+      pom.withXml {
+        asNode().getAt(new QName('http://maven.apache.org/POM/4.0.0', 'version')) + basePom
+      }
     }
-    repositories {
-        mavenLocal()
-    }
+  }
+  repositories {
+    mavenLocal()
+  }
 }
 
 // BINTRAY PUBLISHING
 def bintrayDefaults = [
-        'bintray.user'                     : properties['bintray.user'],
-        'bintray.apiKey'                   : properties['bintray.apiKey'],
-        'bintray.dryRun'                   : false,
-        'bintray.publish'                  : false,
-        'bintray.pkg.publicDownloadNumbers': true
+    'bintray.user'                     : properties['bintray.user'],
+    'bintray.apiKey'                   : properties['bintray.apiKey'],
+    'bintray.dryRun'                   : false,
+    'bintray.publish'                  : false,
+    'bintray.pkg.publicDownloadNumbers': true
 ]
 
 bintrayDefaults.each { key, value ->
-    if (!project.hasProperty(key)) {
-        project.ext.set(key, value)
-    }
+  if (!project.hasProperty(key)) {
+    project.ext.set(key, value)
+  }
 }
 
 bintray {
-    user = project.ext.get('bintray.user')
-    key = project.ext.get('bintray.apiKey')
-    dryRun = project.ext.get('bintray.dryRun')
-    publish = project.ext.get('bintray.publish')
-    publications = ['maven']
-    pkg {
-        repo = 'maven'
-        name = project.artifactId
-        desc = project.description
+  user = project.ext.get('bintray.user')
+  key = project.ext.get('bintray.apiKey')
+  dryRun = project.ext.get('bintray.dryRun')
+  publish = project.ext.get('bintray.publish')
+  publications = ['maven']
+  pkg {
+    repo = 'maven'
+    name = project.artifactId
+    desc = project.description
 
-        websiteUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
-        issueTrackerUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin/issues'
-        vcsUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin.git'
-        licenses = ['MPL-2.0']
+    websiteUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
+    issueTrackerUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin/issues'
+    vcsUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin.git'
+    licenses = ['MPL-2.0']
 
-        publicDownloadNumbers = project.ext.get('bintray.pkg.publicDownloadNumbers')
-        labels = ['scala', 'gradle', 'gradle-plugin', 'protobuff', 'scalabuff']
-        version {
-            desc = project.description
-            attributes = ['gradle-plugin': [pluginId, project.group, project.artifactId].join(':')]
-        }
+    publicDownloadNumbers = project.ext.get('bintray.pkg.publicDownloadNumbers')
+    labels = ['scala', 'gradle', 'gradle-plugin', 'protobuff', 'scalabuff']
+    version {
+      desc = project.description
+      attributes = ['gradle-plugin': [pluginId, project.group, project.artifactId].join(':')]
     }
+  }
 }
 
 build.shouldRunAfter clean

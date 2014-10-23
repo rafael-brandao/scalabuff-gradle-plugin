@@ -6,6 +6,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 dependencies {
-    protobuff = '@protobuffDependency@'
-    scalabuffRuntime = '@scalabuffRuntimeDependency@'
+  protobuff = '@protobuffDependency@'
+  scalabuffRuntime = '@scalabuffRuntimeDependency@'
 }
