@@ -57,16 +57,9 @@ processResources.doLast {
 }
 
 test {
-  enableAssertions = true
   jvmArgs '-Xms256m', '-Xmx512m'
   testLogging {
-    minGranularity = 3
-    showStandardStreams = true
     exceptionFormat 'full'
-    events 'failed'
-    info.events 'passed'
-    debug.events 'started', 'skipped', 'passed', 'standard_out'
-    stackTraceFilters 'groovy', 'entry_point', 'truncate'
   }
 }
 
