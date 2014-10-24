@@ -49,7 +49,23 @@ publishing {
     }
   }
   repositories {
-    mavenLocal()
+    if (status == 'integration') {
+      maven {
+        name 'localSnapshots'
+        url "$buildDir/repo/integration"
+      }
+      maven {
+        name 'JFrogOss'
+        url 'https://oss.jfrog.org/oss-snapshot-local'
+        credentials {
+          username = project."${'bintray.user'}"
+          password = project."${'oss.jfrog.org.password'}"
+        }
+      }
+      model {
+        task install(group: 'Publishing', dependsOn: 'publishMavenPublicationToLocalSnapshotsRepository')
+      }
+    }
   }
 }
 
