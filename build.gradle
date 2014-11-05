@@ -35,8 +35,8 @@ dependencies {
 
 test {
   jvmArgs '-Xms256m', '-Xmx512m'
-  testLogging {
-    exceptionFormat 'full'
+  testLogging.with {
+    exceptionFormat = 'full'
   }
 }
 
