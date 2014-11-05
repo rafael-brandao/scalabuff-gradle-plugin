@@ -8,27 +8,27 @@
 package com.github.rafaelbrandao.gradle.scalabuff.utils
 
 
-case class SoftwareVersion(major: Option[String],
+case class SemanticVersion(major: Option[String],
                            minor: Option[String] = None,
-                           micro: Option[String] = None,
+                           patch: Option[String] = None,
                            revision: Option[String] = None,
                            private val revisionSeparator: Option[String] = None) {
 
   def print(revisionSeparator: String = this.revisionSeparator.getOrElse("-")): String =
-    Seq(major, minor, micro).flatten.mkString("", ".", {
+    Seq(major, minor, patch).flatten.mkString("", ".", {
       revision.map(r => s"$revisionSeparator$r").getOrElse("")
     })
 }
 
 
-object SoftwareVersion {
+object SemanticVersion {
 
   def of(version: String) = pattern.findFirstMatchIn(version).map { m =>
     import m._
-    SoftwareVersion(
+    SemanticVersion(
       major = Option(group(2)),
       minor = Option(group(8)),
-      micro = Option(group(14)),
+      patch = Option(group(14)),
       revision = Array(group(5), group(7), group(11), group(13), group(17)).find(_ != null),
       revisionSeparator = Array(group(4), group(6), group(10), group(12), group(16)).find(_ != null)
     )

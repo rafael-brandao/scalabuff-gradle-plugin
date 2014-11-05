@@ -14,7 +14,7 @@ trait ScalaVersion {
 
   def scalaBaseVersion(version: String): Option[String] = {
     for {
-      version <- SoftwareVersion.of(version)
+      version <- SemanticVersion.of(version)
       major <- version.major
       minor <- version.minor
     } yield s"$major.$minor"

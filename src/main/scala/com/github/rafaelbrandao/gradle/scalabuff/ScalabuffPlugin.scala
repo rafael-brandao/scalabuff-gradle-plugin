@@ -11,7 +11,7 @@ import scala.collection.JavaConverters._
 import scala.util.{Failure, Success, Try}
 
 import com.github.rafaelbrandao.gradle.scalabuff.ScalabuffTasks.{GenerateProtoDescriptors, SCALABUFF_TASK_GROUP, ScalabuffCompile}
-import com.github.rafaelbrandao.gradle.scalabuff.utils.{ScalaVersion, SoftwareVersion}
+import com.github.rafaelbrandao.gradle.scalabuff.utils.{ScalaVersion, SemanticVersion}
 
 import org.gradle.api.plugins.scala.ScalaPlugin
 import org.gradle.api.tasks.scala.ScalaCompile
@@ -165,7 +165,7 @@ trait DetectProtobuff extends ConfigureScalabuff with utils.Exec with utils.Logg
     {
       for {
         rawVersion <- exec(command ++ args).headOption
-        softwareVersion <- SoftwareVersion.of(rawVersion)
+        softwareVersion <- SemanticVersion.of(rawVersion)
       } yield softwareVersion.print()
     }.get
   }
