@@ -1,5 +1,3 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
 plugins {
   id 'com.jfrog.bintray' version '0.6'
   id 'com.github.hierynomus.license' version '0.11.0'
@@ -7,52 +5,31 @@ plugins {
 
 group = 'com.github.rafael-brandao.gradle'
 version = '0.1.0-SNAPSHOT'
-description = 'Gradle plugin for using Google Protocol Buffers in your Gradle Scala project.'
-status = { "$version".endsWith('-SNAPSHOT') ? 'integration' : 'release' }()
+description = 'Gradle plugin for using Google Protocol Buffers in your Scala project.'
+status = { "$version".endsWith('-SNAPSHOT') ? 'integration' : 'release' }
 
-if (!project.hasProperty('scalaVersion')) {
-  ext.scalaVersion = '2.10.4'
-}
 
 apply plugin: 'idea'
-apply plugin: 'groovy'
 apply plugin: 'scala'
-apply from: script('scala-base-version')
+apply plugin: 'java-gradle-plugin'
+apply from: script('license')
 
 ext {
-  protobuffVersion = '2.5.0'
-  scalabuffGroupId = 'net.sandrogrzicic'
-  scalabuffCompilerArtifactId = "scalabuff-compiler_$scalaBase"
-  scalabuffRuntimeArtifactId = "scalabuff-runtime_$scalaBase"
-  scalabuffVersion = '1.3.8'
-
-  artifactId = "${project.name}_$scalaBase"
-  pluginId = "com.github.rafael-brandao.scalabuff_$scalaBase"
+  scalaVersion = '2.11.4'
+  scalaBase = '2.11'
+  pluginId = 'com.github.rafael-brandao.scalabuff'
 }
 
 repositories {
-  mavenCentral()
+  jcenter()
 }
 
 dependencies {
-  compile gradleApi()
   compile localGroovy()
-  compile "org.scala-lang:scala-library:$scalaVersion",
-      "$scalabuffGroupId:$scalabuffCompilerArtifactId:$scalabuffVersion"
-  testCompile "org.scalatest:scalatest_$scalaBase:2.2.3-SNAP2",
-      "junit:junit:4.12-beta-2"
-}
-
-filterTokens(processTestResources, ['scalaBase': scalaBase])
-filterTokens(processResources, [
-    'protobuffDependency'       : "com.google.protobuf:protobuf-java:$protobuffVersion",
-    'scalabuffRuntimeDependency': "$scalabuffGroupId:$scalabuffRuntimeArtifactId:$scalabuffVersion",
-])
-
-processResources.doLast {
-  def tempPluginId = pluginId - "_$scalaBase"
-  file("${sourceSets.main.output.resourcesDir}/META-INF/gradle-plugins/${tempPluginId}.properties").renameTo(
-      file("${sourceSets.main.output.resourcesDir}/META-INF/gradle-plugins/${pluginId}.properties")
+  compile "org.scala-lang:scala-library:$scalaVersion"
+  testCompile(
+      "org.scalatest:scalatest_$scalaBase:2.2.3-SNAP2",
+      'junit:junit:4.12-beta-2'
   )
 }
 
@@ -74,13 +51,8 @@ configure(tasks.withType(ScalaCompile)) {
 }
 
 task sourcesJar(type: Jar) {
-  description = 'An archive of the source code'
   classifier = 'sources'
-  from sourceSets.main.allSource.srcDirs - sourceSets.main.resources.srcDirs + sourceSets.main.output.resourcesDir
-}
-
-configure(tasks.withType(Jar)) {
-  baseName = artifactId
+  from sourceSets.main.allSource.srcDirs
 }
 
 artifacts {
@@ -91,16 +63,9 @@ task wrapper(type: Wrapper) {
   gradleVersion = "2.1"
 }
 
-apply from: script('license')
 apply from: script('publishing')
 
 // Helper methods
 File script(String name) {
   project.file("gradle/${name}.gradle")
-}
-
-void filterTokens(ProcessResources task, Map tokens) {
-  configure(task) {
-    filter ReplaceTokens, tokens: tokens.collectEntries { k, v -> [k, v.toString()] }
-  }
 }
