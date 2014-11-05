@@ -35,7 +35,7 @@ def basePom = {
 publishing {
   publications {
     maven(MavenPublication) {
-      artifactId project.artifactId
+      artifactId project.name
 
       from components.java
 
@@ -92,7 +92,7 @@ bintray {
   publications = ['maven']
   pkg {
     repo = 'maven'
-    name = project.artifactId
+    name = project.name
     desc = project.description
 
     websiteUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
@@ -104,10 +104,14 @@ bintray {
     labels = ['scala', 'gradle', 'gradle-plugin', 'protobuff', 'scalabuff']
     version {
       desc = project.description
-      attributes = ['gradle-plugin': [pluginId, project.group, project.artifactId].join(':')]
+      attributes = ['gradle-plugin': [pluginId, project.group, project.name].join(':')]
     }
   }
 }
 
 build.shouldRunAfter clean
-bintrayUpload.dependsOn clean, build, publish
+
+def bU = bintrayUpload
+model {
+  bU.dependsOn('clean', 'build', 'generatePomFileForMavenPublication')
+}
