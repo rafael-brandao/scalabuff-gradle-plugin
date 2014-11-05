@@ -1,7 +1,9 @@
-buildscript {
+// Uncomment this 'buildscript' to use snapshot binaries
+/*buildscript {
   repositories {
     jcenter()
     maven {
+//    url 'https://oss.jfrog.org/oss-snapshot-local/'
       url "$rootDir/../../build/repo/integration"
     }
   }
@@ -10,6 +12,16 @@ buildscript {
         version: '0.+', changing: true)
   }
   configurations.classpath { resolutionStrategy.cacheChangingModulesFor 0, 'seconds' }
+}*/
+
+// Comment out this 'buildscript' block when using snapshot binaries
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.github.rafael-brandao.gradle:scalabuff-gradle-plugin:0.1.0'
+  }
 }
 
 subprojects {
@@ -25,6 +37,13 @@ subprojects {
 }
 
 project('api') {
+// Gradle still does not allow 'plugins' block to be used in conjunction with
+// subprojects {}, allprojects {} etc. So this won't work.
+
+// plugins {
+//   id 'com.github.rafael-brandao.scalabuff' version '0.1.0'
+// }
+
   apply plugin: 'com.github.rafael-brandao.scalabuff'
   scalabuff {
     failIfProtocNotDetected = true
