@@ -1,12 +1,14 @@
 # Scalabuff Gradle Plugin
 
-|      Scala 2.10      |      Scala 2.11      |
-|----------------------|----------------------|
-| [![Download for Scala 2.10](https://api.bintray.com/packages/rafael-brandao/maven/scalabuff-gradle-plugin_2.10/images/download.svg) ](https://bintray.com/rafael-brandao/maven/scalabuff-gradle-plugin_2.10/_latestVersion) | [![Download for Scala 2.11](https://api.bintray.com/packages/rafael-brandao/maven/scalabuff-gradle-plugin_2.11/images/download.svg) ](https://bintray.com/rafael-brandao/maven/scalabuff-gradle-plugin_2.11/_latestVersion) |
+|                      |
+|----------------------|
+|  [ ![Download](https://api.bintray.com/packages/rafael-brandao/maven/scalabuff-gradle-plugin/images/download.svg) ](https://bintray.com/rafael-brandao/maven/scalabuff-gradle-plugin/_latestVersion) | 
 
 This is a Gradle plugin that acts as a wrapper of the [ScalaBuff](https://github.com/SandroGrzicic/ScalaBuff) tool.
 
-It applies the `scala` plugin automatically and adds the tasks `compileProto` and `cleanProto` to Gradle. Normally there is no need to call these tasks, they are integrated in Gradle build lifecycle.
+It automatically applies the `scala` plugin and adds the tasks `scalabuffCompile` and `generateProtoDescriptors` to Gradle. Normally there is no need to call or configure these tasks, they are integrated in Gradle build lifecycle.
+
+Scala library version is inferred after project evaluation, so the user must declare it as a `compile` dependency.
 
 
 ## Examples
@@ -16,11 +18,21 @@ A simple example script:
 ```groovy
 // Using the new, incubating, plugin mechanism introduced in Gradle 2.1
 plugins {
-    id 'com.github.rafael-brandao.scalabuff_2.10' version '0.0.1'
+    id 'com.github.rafael-brandao.scalabuff' version '0.1.0'
 }
 
+apply plugin: 'com.github.rafael-brandao.scalabuff'
+
 scalabuff {
-	// Plugin configuration goes here
+    // Plugin configuration goes here, but it is optional
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.10.4'
 }
 ```
 
@@ -33,61 +45,80 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.rafael-brandao.gradle:scalabuff-gradle-plugin_2.10:0.0.1'
+        classpath 'com.github.rafael-brandao.gradle:scalabuff-gradle-plugin:0.1.0'
     }
 }
-apply plugin: 'com.github.rafael-brandao.scalabuff_2.10'
+apply plugin: 'com.github.rafael-brandao.scalabuff'
 
 scalabuff {
-	// Plugin configuration goes here
+    // Plugin configuration goes here, but it is optional
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.10.4'
 }
 ```
+
+
+----------
+
 
 Full plugin configuration example (showing the default settings):
 
 ```groovy
 plugins {
-    id 'com.github.rafael-brandao.scalabuff_2.10' version '0.0.1'
+    id 'com.github.rafael-brandao.scalabuff' version '0.1.0'
+}
+
+apply plugin: 'com.github.rafael-brandao.scalabuff'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.10.4'
 }
 
 scalabuff {
-	sourceSets = ['src/protobuff']
+	sourceSets {
+        proto {
+            srcDir = 'src/proto'
+        }
+    }
+
+    outputDir             = file("${project.buildDir}/scalabuff") // read-only                             
+    generatedSourcesDir   = file("${scalabuff.outputDir}/generated-sources") // read-only
+    generatedResourcesDir = file("${scalabuff.outputDir}/generated-resources") // read-only
 	
-	outputDir = file("${project.buildDir}/scalabuff")
-	generatedSourcesDir = file("${scalabuff.outputDir}/generated-sources")
-	generatedResourcesDir = file("${scalabuff.outputDir}/generated-resources")
-	
-	generateDescriptor = true
+    failIfProtocNotDetected = false
+    generateDescriptor      = true
+    protocPath              = 'protoc'
 }
 ```
 
 
 ## Workflow
 
- 1.  Scan the `${scalabuff.sourceSets}` directory for any `.proto` files;
+ 1.  Scan `${scalabuff.sourceSets}` directories for any `.proto` files;
  2. Convert any `.proto` file found to a valid Scala class using the [ScalaBuff](https://github.com/SandroGrzicic/ScalaBuff) tool;
  3. Store the generated sources in `${scalabuff.generated-sources}`  directory;
  4. Store the generated descriptors in `${scalabuff.generated-resources}`. For example, a file named `myFile.proto` will have it's descriptor file named as `myFile.proto.descriptor`.
  5. Automatically applies the `scala` plugin;
- 6. Add compile time dependency to `protobuf-java` and `scalabuff-runtime` libraries;
- 7. Add `${scalabuff.generated-sources}`  directory to the `${sourceSets.scala.main.srcDirs}` for compilation.
-
+ 6. Add compile time dependency to `scalabuff-runtime` library;
+ 7. Add `${scalabuff.generated-sources}`  directory to `${sourceSets.scala.main.srcDirs}` for compilation;
+ 8. Optional: If property  `failIfProtocNotDetected` is set to true, the plugin fails the build if it can't detect `protoc` command in the path;
+ 9. Optional: Set property `protocPath` to provide a configurable way to find `protoc` command. It defaults to `'protoc'`
 
 ## Notes
 
- - Current `scalabuff` version is  `1.3.8` and `protobuf-java` version is `2.5.0`;
- - There is also a scala '2.11' version, but until [scalabuff issue 80](https://github.com/SandroGrzicic/ScalaBuff/issues/80) gets fixed, it generates code that will not compile. Scala `2.11` example:
-
-```groovy
-plugins {
-	id 'com.github.rafael-brandao.scalabuff_2.11' version '0.0.1'
-}
-
-scalabuff {
-	// config goes here...
-}
-```
+ - Current `scalabuff` version is  `1.3.8` ;
+ - Until [scalabuff issue 80](https://github.com/SandroGrzicic/ScalaBuff/issues/80) gets fixed, scala 2.11 generated code will not compile.
 
 
-# License
-released under the [Mozilla Public License, Version 2.0](https://www.mozilla.org/MPL/2.0/)
+## License
+Released under the [Mozilla Public License, Version 2.0](https://www.mozilla.org/MPL/2.0/)
