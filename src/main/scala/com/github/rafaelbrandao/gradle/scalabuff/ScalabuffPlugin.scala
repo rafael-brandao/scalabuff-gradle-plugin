@@ -27,8 +27,8 @@ class ScalabuffPlugin extends Plugin[Project] {
 
 
 object ConfigureScalabuff extends ApplyScala with CreateScalabuffExtension
-with ConfigureClasspath with ConfigureTasks with DetectProtobuff
-with ConfigureDependencies {
+  with ConfigureClasspath with ConfigureTasks with DetectProtobuff
+  with ConfigureDependencies {
 
   def on(project: Project): Unit = configure(project)
 }
