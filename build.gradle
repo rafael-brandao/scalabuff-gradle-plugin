@@ -40,13 +40,15 @@ test {
   }
 }
 
-configure(tasks.withType(ScalaCompile)) {
-  options.encoding = 'UTF-8'
-  scalaCompileOptions.with {
-    additionalParameters = ['-feature', '-Yinline-warnings']
-    deprecation = true
-    encoding = 'UTF-8'
-    useAnt = false
+tasks.withType(ScalaCompile).each { task ->
+  task.with {
+    options.encoding = 'UTF-8'
+    scalaCompileOptions.with {
+      additionalParameters = ['-feature', '-Yinline-warnings']
+      deprecation = true
+      encoding = 'UTF-8'
+      useAnt = false
+    }
   }
 }
 
