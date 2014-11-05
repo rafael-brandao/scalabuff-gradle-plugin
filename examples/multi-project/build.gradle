@@ -1,45 +1,45 @@
 buildscript {
-    repositories {
-        jcenter()
-        maven {
-            url "$rootDir/../../build/repo/integration"
-        }
+  repositories {
+    jcenter()
+    maven {
+      url "$rootDir/../../build/repo/integration"
     }
-    dependencies {
-        classpath(group: 'com.github.rafael-brandao.gradle', name: 'scalabuff-gradle-plugin',
-                version: '0.+', changing: true)
-    }
-    configurations.classpath { resolutionStrategy.cacheChangingModulesFor 0, 'seconds' }
+  }
+  dependencies {
+    classpath(group: 'com.github.rafael-brandao.gradle', name: 'scalabuff-gradle-plugin',
+        version: '0.+', changing: true)
+  }
+  configurations.classpath { resolutionStrategy.cacheChangingModulesFor 0, 'seconds' }
 }
 
 subprojects {
-    apply plugin: 'scala'
+  apply plugin: 'scala'
 
-    repositories {
-        jcenter()
-    }
+  repositories {
+    jcenter()
+  }
 
-    dependencies {
-        compile 'org.scala-lang:scala-library:2.10.4'
-    }
+  dependencies {
+    compile 'org.scala-lang:scala-library:2.10.4'
+  }
 }
 
 project('api') {
-    apply plugin: 'com.github.rafael-brandao.scalabuff'
-    scalabuff {
-        failIfProtocNotDetected = true
-    }
+  apply plugin: 'com.github.rafael-brandao.scalabuff'
+  scalabuff {
+    failIfProtocNotDetected = true
+  }
 }
 
 project('service') {
-    dependencies {
-        compile project(':api')
-    }
+  dependencies {
+    compile project(':api')
+  }
 
-    task run(dependsOn: build) << {
-        javaexec {
-            main = 'multiproject.impl.Service'
-            classpath = sourceSets.main.runtimeClasspath + sourceSets.main.output
-        }
+  task run(dependsOn: build) << {
+    javaexec {
+      main = 'multiproject.impl.Service'
+      classpath = sourceSets.main.runtimeClasspath + sourceSets.main.output
     }
+  }
 }

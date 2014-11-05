@@ -1,36 +1,36 @@
 buildscript {
-    repositories {
-        jcenter()
-        maven {
-            url "$rootDir/../../build/repo/integration"
-        }
+  repositories {
+    jcenter()
+    maven {
+      url "$rootDir/../../build/repo/integration"
     }
-    dependencies {
-        classpath(group: 'com.github.rafael-brandao.gradle', name: 'scalabuff-gradle-plugin',
-                version: '0.+', changing: true)
-    }
-    configurations.classpath { resolutionStrategy.cacheChangingModulesFor 0, 'seconds' }
+  }
+  dependencies {
+    classpath(group: 'com.github.rafael-brandao.gradle', name: 'scalabuff-gradle-plugin',
+        version: '0.+', changing: true)
+  }
+  configurations.classpath { resolutionStrategy.cacheChangingModulesFor 0, 'seconds' }
 }
 
 apply plugin: 'com.github.rafael-brandao.scalabuff' // implies apply plugin: 'scala'
 
 repositories {
-    jcenter()
+  jcenter()
 }
 
 dependencies {
-    compile 'org.scala-lang:scala-library:2.10.4'
+  compile 'org.scala-lang:scala-library:2.10.4'
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource.srcDirs
+  classifier = 'sources'
+  from sourceSets.main.allSource.srcDirs
 }
 
 artifacts {
-    archives sourcesJar
+  archives sourcesJar
 }
 
 scalabuff {
-    generateDescriptors = false
+  generateDescriptors = false
 }
