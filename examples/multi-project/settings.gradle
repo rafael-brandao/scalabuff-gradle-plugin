@@ -1,0 +1,4 @@
+rootProject.name = 'scalabuff-gradle-plugin-multi-project'
+
+include 'api'
+include 'service'

@@ -1,0 +1,18 @@
+option java_package = "multiproject.api";
+
+option java_multiple_files = true;
+
+enum Country {
+    BRAZIL = 1;
+}
+
+message Address {
+    required string street = 1;
+    required string number = 2;
+    optional string complement = 3;
+    required string district = 4;
+    required string city = 5;
+    required string state = 6;
+    required Country country = 7;
+    required string postalCode = 8;
+}
