@@ -6,7 +6,7 @@ plugins {
 group = 'com.github.rafael-brandao.gradle'
 version = '0.1.0-SNAPSHOT'
 description = 'Gradle plugin for using Google Protocol Buffers in your Scala project.'
-status = { "$version".endsWith('-SNAPSHOT') ? 'integration' : 'release' }
+status = { "$version".endsWith('-SNAPSHOT') ? 'integration' : 'release' }()
 
 
 apply plugin: 'idea'
