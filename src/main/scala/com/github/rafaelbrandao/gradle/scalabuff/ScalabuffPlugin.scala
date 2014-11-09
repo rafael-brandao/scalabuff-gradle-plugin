@@ -10,15 +10,15 @@ package com.github.rafaelbrandao.gradle.scalabuff
 import scala.collection.JavaConverters._
 import scala.util.{Failure, Success, Try}
 
-import com.github.rafaelbrandao.gradle.scalabuff.ScalabuffTasks.{GenerateProtoDescriptors, SCALABUFF_TASK_GROUP, ScalabuffCompile}
-import com.github.rafaelbrandao.gradle.scalabuff.utils.{ScalaVersion, SemanticVersion}
-
 import org.gradle.api.plugins.scala.ScalaPlugin
 import org.gradle.api.tasks.scala.ScalaCompile
 import org.gradle.api.{GradleException, Plugin, Project, ProjectConfigurationException}
 import org.gradle.language.jvm.tasks.ProcessResources
 
 import org.apache.tools.ant.taskdefs.condition.Os
+
+import com.github.rafaelbrandao.gradle.scalabuff.ScalabuffTasks.{GenerateProtoDescriptors, SCALABUFF_TASK_GROUP, ScalabuffCompile}
+import com.github.rafaelbrandao.gradle.scalabuff.utils.{ScalaVersion, SemanticVersion}
 
 
 class ScalabuffPlugin extends Plugin[Project] {

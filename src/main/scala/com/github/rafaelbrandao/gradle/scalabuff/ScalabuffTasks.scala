@@ -16,6 +16,8 @@ import _root_.scala.collection.JavaConverters._
 import org.gradle.api.tasks._
 import org.gradle.api.{DefaultTask, Task}
 
+import com.github.rafaelbrandao.gradle.scalabuff.utils._
+
 
 object ScalabuffTasks {
 
@@ -49,7 +51,7 @@ object ScalabuffTasks {
   }
 
 
-  class ScalabuffCompile extends BaseTask with utils.Exec with utils.Logger {
+  class ScalabuffCompile extends BaseTask with utils.Exec with Logger {
 
     @OutputDirectory
     @BeanProperty var destinationDir: File = null

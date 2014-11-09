@@ -11,10 +11,10 @@ import groovy.lang.Closure
 
 import scala.beans.BeanProperty
 
+import org.gradle.api.{NamedDomainObjectContainer, Project}
+
 import com.github.rafaelbrandao.gradle.scalabuff.ScalabuffExtension._
 import com.github.rafaelbrandao.gradle.scalabuff.domain.ScalabuffSourceSet
-
-import org.gradle.api.{NamedDomainObjectContainer, Project}
 
 
 class ScalabuffExtension(project: Project) {

@@ -9,9 +9,6 @@ package com.github.rafaelbrandao.gradle.scalabuff.specs
 
 import scala.collection.JavaConverters._
 
-import com.github.rafaelbrandao.gradle.scalabuff._
-import com.github.rafaelbrandao.gradle.scalabuff.specs.ScalabuffSpec._
-
 import org.gradle.api._
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.scala.ScalaPlugin
@@ -22,6 +19,9 @@ import org.codehaus.groovy.runtime.MethodClosure
 import org.junit.runner.RunWith
 import org.scalatest._
 import org.scalatest.junit.JUnitRunner
+
+import com.github.rafaelbrandao.gradle.scalabuff._
+import com.github.rafaelbrandao.gradle.scalabuff.specs.ScalabuffSpec._
 
 
 @RunWith(classOf[JUnitRunner])
