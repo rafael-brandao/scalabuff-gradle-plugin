@@ -58,8 +58,8 @@ publishing {
         name 'JFrogOss'
         url 'https://oss.jfrog.org/oss-snapshot-local'
         credentials {
-          username = project."${'bintray.user'}"
-          password = project."${'oss.jfrog.org.password'}"
+          username = project.properties['oss.jfrog.org.user']
+          password = project.properties['oss.jfrog.org.password']
         }
       }
       model {
