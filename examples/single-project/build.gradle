@@ -1,5 +1,5 @@
 // Uncomment this 'buildscript' to use snapshot binaries
-/*buildscript {
+buildscript {
   repositories {
     jcenter()
     maven {
@@ -12,12 +12,12 @@
         version: '0.+', changing: true)
   }
   configurations.classpath { resolutionStrategy.cacheChangingModulesFor 0, 'seconds' }
-}*/
+}
 
 // Comment out 'plugins' block when using snapshot binaries
-plugins {
-  id 'com.github.rafael-brandao.scalabuff' version '0.1.0'
-}
+//plugins {
+//  id 'com.github.rafael-brandao.scalabuff' version '0.1.0'
+//}
 
 apply plugin: 'com.github.rafael-brandao.scalabuff' // implies apply plugin: 'scala'
 
@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-  compile 'org.scala-lang:scala-library:2.10.4'
+  compile 'org.scala-lang:scala-library:2.11.4'
 }
 
 task sourcesJar(type: Jar) {
