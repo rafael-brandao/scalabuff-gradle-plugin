@@ -1,6 +1,6 @@
 plugins {
-  id 'com.jfrog.bintray' version '0.6'
-  id 'com.github.hierynomus.license' version '0.11.0'
+    id 'com.jfrog.bintray' version '0.6'
+    id 'com.github.hierynomus.license' version '0.11.0'
 }
 
 group = 'com.github.rafael-brandao.gradle'
@@ -10,65 +10,61 @@ status = { "$version".endsWith('-SNAPSHOT') ? 'integration' : 'release' }()
 
 
 apply plugin: 'idea'
-apply plugin: 'scala'
+apply plugin: 'groovy'
 apply plugin: 'java-gradle-plugin'
 apply from: script('license')
 
 ext {
-  scalaVersion = '2.11.4'
-  scalaBase = '2.11'
-  pluginId = 'com.github.rafael-brandao.scalabuff'
+    pluginId = 'com.github.rafael-brandao.scalabuff'
 }
 
 repositories {
-  jcenter()
+    jcenter()
 }
 
 dependencies {
-  compile localGroovy()
-  compile "org.scala-lang:scala-library:$scalaVersion"
-  testCompile(
-      "org.scalatest:scalatest_$scalaBase:2.2.3-SNAP2",
-      'junit:junit:4.12-beta-2'
-  )
+    compile localGroovy()
+    compile('com.github.mperry:functionalgroovy-core:0.6') {
+        exclude module: 'groovy-all'
+        exclude module: 'junit'
+    }
+
+    testCompile('org.spockframework:spock-core:0.7-groovy-2.0') {
+        exclude module: 'groovy-all'
+    }
 }
 
 test {
-  jvmArgs '-Xms256m', '-Xmx512m'
-  testLogging.with {
-    exceptionFormat = 'full'
-  }
+    jvmArgs '-Xms256m', '-Xmx512m'
+    testLogging.with {
+        exceptionFormat = 'full'
+    }
 }
 
-tasks.withType(ScalaCompile).each { task ->
-  task.with {
-    options.encoding = 'UTF-8'
-    scalaCompileOptions.with {
-      additionalParameters = ['-feature', '-Yinline-warnings']
-      deprecation = true
-      encoding = 'UTF-8'
-      useAnt = false
+tasks.withType(GroovyCompile).each { task ->
+    task.with {
+        options.encoding = 'UTF-8'
+        groovyOptions.encoding = 'UTF-8'
     }
-  }
 }
 
 task sourcesJar(type: Jar) {
-  classifier = 'sources'
-  from sourceSets.main.allSource.srcDirs
+    classifier = 'sources'
+    from sourceSets.main.allSource.srcDirs
 }
 
 artifacts {
-  archives sourcesJar
+    archives sourcesJar
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = "2.1"
-  distributionUrl = "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
+    gradleVersion = "2.2"
+    distributionUrl = "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
 }
 
 apply from: script('publishing')
 
 // Helper methods
 File script(String name) {
-  project.file("gradle/${name}.gradle")
+    project.file("gradle/${name}.gradle")
 }
