@@ -103,6 +103,7 @@ bintray {
         publicDownloadNumbers = project.properties['bintray.pkg.publicDownloadNumbers']
         labels                = ['scala', 'gradle', 'gradle-plugin', 'protobuff', 'scalabuff']
         version {
+            vcsTag     = "v${project.version}"
             desc       = project.description
             attributes = ['gradle-plugin': [pluginId, project.group, project.name].join(':')]
         }
