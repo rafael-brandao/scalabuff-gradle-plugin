@@ -1,5 +1,5 @@
 // Uncomment this 'buildscript' to use snapshot binaries
-buildscript {
+/*buildscript {
   repositories {
     jcenter()
     maven {
@@ -12,28 +12,28 @@ buildscript {
         version: '0.+', changing: true)
   }
   configurations.classpath { resolutionStrategy.cacheChangingModulesFor 0, 'seconds' }
-}
-
-// Comment out this 'buildscript' block when using snapshot binaries
-/*buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath 'com.github.rafael-brandao.gradle:scalabuff-gradle-plugin:0.1.0'
-  }
 }*/
 
+// Comment out this 'buildscript' block when using snapshot binaries
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.rafael-brandao.gradle:scalabuff-gradle-plugin:0.1.0'
+    }
+}
+
 subprojects {
-  apply plugin: 'scala'
+    apply plugin: 'scala'
 
-  repositories {
-    jcenter()
-  }
+    repositories {
+        jcenter()
+    }
 
-  dependencies {
-    compile 'org.scala-lang:scala-library:2.11.4'
-  }
+    dependencies {
+        compile 'org.scala-lang:scala-library:2.11.4'
+    }
 }
 
 project('api') {
@@ -44,21 +44,21 @@ project('api') {
 //   id 'com.github.rafael-brandao.scalabuff' version '0.1.0'
 // }
 
-  apply plugin: 'com.github.rafael-brandao.scalabuff'
-  scalabuff {
-    failIfProtocNotDetected = true
-  }
+    apply plugin: 'com.github.rafael-brandao.scalabuff'
+    scalabuff {
+        failIfProtocNotDetected = true
+    }
 }
 
 project('service') {
-  dependencies {
-    compile project(':api')
-  }
-
-  task run(dependsOn: build) << {
-    javaexec {
-      main = 'multiproject.impl.Service'
-      classpath = sourceSets.main.runtimeClasspath + sourceSets.main.output
+    dependencies {
+        compile project(':api')
     }
-  }
+
+    task run(dependsOn: build) << {
+        javaexec {
+            main = 'multiproject.impl.Service'
+            classpath = sourceSets.main.runtimeClasspath + sourceSets.main.output
+        }
+    }
 }

@@ -3,70 +3,70 @@ import groovy.xml.QName
 apply plugin: 'maven-publish'
 
 def basePom = {
-  resolveStrategy = Closure.DELEGATE_FIRST
-  name 'ScalaBuff Gradle Plugin'
-  description project.description
-  url 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
-  developers {
-    developer {
-      id 'rafael-brandao'
-      name 'Rafael Brandão'
-      email 'rafa.bra@gmail.com'
-    }
-  }
-  licenses {
-    license {
-      name 'Mozilla Public License, Version 2.0'
-      url 'https://www.mozilla.org/MPL/2.0/'
-      distribution 'repo'
-    }
-  }
-  scm {
+    resolveStrategy = Closure.DELEGATE_FIRST
+    name 'ScalaBuff Gradle Plugin'
+    description project.description
     url 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
-    connection 'scm:git:git://github.com/rafael-brandao/scalabuff-gradle-plugin.git'
-    developerConnection 'scm:git:ssh://git@github.com/rafael-brandao/scalabuff-gradle-plugin.git'
-  }
-  issueManagement {
-    system 'GitHub'
-    url 'https://github.com/rafael-brandao/scalabuff-gradle-plugin/issues'
-  }
+    developers {
+        developer {
+            id 'rafael-brandao'
+            name 'Rafael Brandão'
+            email 'rafa.bra@gmail.com'
+        }
+    }
+    licenses {
+        license {
+            name 'Mozilla Public License, Version 2.0'
+            url 'https://www.mozilla.org/MPL/2.0/'
+            distribution 'repo'
+        }
+    }
+    scm {
+        url 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
+        connection 'scm:git:git://github.com/rafael-brandao/scalabuff-gradle-plugin.git'
+        developerConnection 'scm:git:ssh://git@github.com/rafael-brandao/scalabuff-gradle-plugin.git'
+    }
+    issueManagement {
+        system 'GitHub'
+        url 'https://github.com/rafael-brandao/scalabuff-gradle-plugin/issues'
+    }
 }
 
 publishing {
-  publications {
-    maven(MavenPublication) {
-      artifactId project.name
+    publications {
+        maven(MavenPublication) {
+            artifactId project.name
 
-      from components.java
+            from components.java
 
-      artifact sourcesJar {
-        classifier "sources"
-      }
+            artifact sourcesJar {
+                classifier "sources"
+            }
 
-      pom.withXml {
-        asNode().getAt(new QName('http://maven.apache.org/POM/4.0.0', 'version')) + basePom
-      }
-    }
-  }
-  repositories {
-    if (status == 'integration') {
-      maven {
-        name 'localSnapshots'
-        url "$buildDir/repo/integration"
-      }
-      maven {
-        name 'JFrogOss'
-        url 'https://oss.jfrog.org/oss-snapshot-local'
-        credentials {
-          username = project.properties['oss.jfrog.org.user']
-          password = project.properties['oss.jfrog.org.password']
+            pom.withXml {
+                asNode().getAt(new QName('http://maven.apache.org/POM/4.0.0', 'version')) + basePom
+            }
         }
-      }
-      model {
-        task install(group: 'Publishing', dependsOn: 'publishMavenPublicationToLocalSnapshotsRepository')
-      }
     }
-  }
+    repositories {
+        if (status == 'integration') {
+            maven {
+                name 'localSnapshots'
+                url "$buildDir/repo/integration"
+            }
+            maven {
+                name 'JFrogOss'
+                url 'https://oss.jfrog.org/oss-snapshot-local'
+                credentials {
+                    username = project.properties['oss.jfrog.org.user']
+                    password = project.properties['oss.jfrog.org.password']
+                }
+            }
+            model {
+                task install(group: 'Publishing', dependsOn: 'publishMavenPublicationToLocalSnapshotsRepository')
+            }
+        }
+    }
 }
 
 // BINTRAY PUBLISHING
@@ -79,39 +79,39 @@ def bintrayDefaults = [
 ]
 
 bintrayDefaults.each { key, value ->
-  if (!project.hasProperty(key)) {
-    project.ext.set(key, value)
-  }
+    if (!project.hasProperty(key)) {
+        project.ext.set(key, value)
+    }
 }
 
 bintray {
-  user = project.ext.get('bintray.user')
-  key = project.ext.get('bintray.apiKey')
-  dryRun = project.ext.get('bintray.dryRun')
-  publish = project.ext.get('bintray.publish')
-  publications = ['maven']
-  pkg {
-    repo = 'maven'
-    name = project.name
-    desc = project.description
+    user         = project.ext.get('bintray.user')
+    key          = project.ext.get('bintray.apiKey')
+    dryRun       = project.ext.get('bintray.dryRun')
+    publish      = project.ext.get('bintray.publish')
+    publications = ['maven']
+    pkg {
+        repo = 'maven'
+        name = project.name
+        desc = project.description
 
-    websiteUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
-    issueTrackerUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin/issues'
-    vcsUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin.git'
-    licenses = ['MPL-2.0']
+        websiteUrl      = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin'
+        issueTrackerUrl = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin/issues'
+        vcsUrl          = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin.git'
+        licenses        = ['MPL-2.0']
 
-    publicDownloadNumbers = project.ext.get('bintray.pkg.publicDownloadNumbers')
-    labels = ['scala', 'gradle', 'gradle-plugin', 'protobuff', 'scalabuff']
-    version {
-      desc = project.description
-      attributes = ['gradle-plugin': [pluginId, project.group, project.name].join(':')]
+        publicDownloadNumbers = project.ext.get('bintray.pkg.publicDownloadNumbers')
+        labels                = ['scala', 'gradle', 'gradle-plugin', 'protobuff', 'scalabuff']
+        version {
+            desc       = project.description
+            attributes = ['gradle-plugin': [pluginId, project.group, project.name].join(':')]
+        }
     }
-  }
 }
 
 build.shouldRunAfter clean
 
 def bU = bintrayUpload
 model {
-  bU.dependsOn('clean', 'build', 'generatePomFileForMavenPublication')
+    bU.dependsOn('clean', 'build', 'generatePomFileForMavenPublication')
 }
