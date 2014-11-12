@@ -14,6 +14,10 @@ apply plugin: 'groovy'
 apply plugin: 'java-gradle-plugin'
 apply from: script('license')
 
+afterEvaluate {
+    apply from: script('publishing')
+}
+
 ext {
     pluginId = 'com.github.rafael-brandao.scalabuff'
 }
@@ -61,8 +65,6 @@ task wrapper(type: Wrapper) {
     gradleVersion = "2.2"
     distributionUrl = "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
 }
-
-apply from: script('publishing')
 
 // Helper methods
 File script(String name) {
