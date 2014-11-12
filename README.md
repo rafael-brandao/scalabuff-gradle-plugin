@@ -1,12 +1,10 @@
 # Scalabuff Gradle Plugin
 
-|                      |
-|----------------------|
-|  [ ![Download](https://api.bintray.com/packages/rafael-brandao/maven/scalabuff-gradle-plugin/images/download.svg) ](https://bintray.com/rafael-brandao/maven/scalabuff-gradle-plugin/_latestVersion) | 
+[ ![Download](https://api.bintray.com/packages/rafael-brandao/maven/scalabuff-gradle-plugin/images/download.svg) ](https://bintray.com/rafael-brandao/maven/scalabuff-gradle-plugin/_latestVersion)
 
 This is a Gradle plugin that acts as a wrapper of the [ScalaBuff](https://github.com/SandroGrzicic/ScalaBuff) tool.
 
-It automatically applies the `scala` plugin and adds the tasks `scalabuffCompile` and `generateProtoDescriptors` to Gradle. Normally there is no need to call or configure these tasks, they are integrated in Gradle build lifecycle.
+It automatically applies the `scala` plugin and adds the tasks `scalabuffCompile` and `generateProtoDescriptors` to Gradle. Normally there is no need to call or configure these tasks, they are nicely integrated in Gradle build lifecycle.
 
 Scala library version is inferred after project evaluation, so the user must declare it as a `compile` dependency.
 
@@ -18,7 +16,7 @@ A simple example script:
 ```groovy
 // Using the new, incubating, plugin mechanism introduced in Gradle 2.1
 plugins {
-    id 'com.github.rafael-brandao.scalabuff' version '0.1.0'
+    id 'com.github.rafael-brandao.scalabuff' version '0.2.0'
 }
 
 apply plugin: 'com.github.rafael-brandao.scalabuff'
@@ -32,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.scala-lang:scala-library:2.10.4'
+    compile 'org.scala-lang:scala-library:2.11.4'
 }
 ```
 
@@ -45,7 +43,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.rafael-brandao.gradle:scalabuff-gradle-plugin:0.1.0'
+        classpath 'com.github.rafael-brandao.gradle:scalabuff-gradle-plugin:0.2.0'
     }
 }
 apply plugin: 'com.github.rafael-brandao.scalabuff'
@@ -59,7 +57,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.scala-lang:scala-library:2.10.4'
+    compile 'org.scala-lang:scala-library:2.11.4'
 }
 ```
 
@@ -71,7 +69,7 @@ Full plugin configuration example (showing the default settings):
 
 ```groovy
 plugins {
-    id 'com.github.rafael-brandao.scalabuff' version '0.1.0'
+    id 'com.github.rafael-brandao.scalabuff' version '0.2.0'
 }
 
 apply plugin: 'com.github.rafael-brandao.scalabuff'
@@ -81,7 +79,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.scala-lang:scala-library:2.10.4'
+    compile 'org.scala-lang:scala-library:2.11.4'
 }
 
 scalabuff {
@@ -114,10 +112,15 @@ scalabuff {
  8. Optional: If property  `failIfProtocNotDetected` is set to true, the plugin fails the build if it can't detect `protoc` command in the path;
  9. Optional: Set property `protocPath` to provide a configurable way to find `protoc` command. It defaults to `'protoc'`
 
-## Notes
+##Release Notes
 
- - Current `scalabuff` version is  `1.3.8` ;
- - Until [scalabuff issue 80](https://github.com/SandroGrzicic/ScalaBuff/issues/80) gets fixed, scala 2.11 generated code will not compile.
+### 0.2.0
+- Changed implementation from scala to groovy
+- Implemented a post compile hook that embraces [scalabuff issue 80](https://github.com/SandroGrzicic/ScalaBuff/issues/80) and produces correct scala 2.11 code
+
+### 0.1.0
+ - Current `scalabuff` version is  `1.3.8` 
+ - Until [scalabuff issue 80](https://github.com/SandroGrzicic/ScalaBuff/issues/80) gets fixed, scala 2.11 generated code will not compile
 
 
 ## License
