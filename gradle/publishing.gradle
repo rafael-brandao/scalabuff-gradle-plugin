@@ -80,15 +80,15 @@ def bintrayDefaults = [
 
 bintrayDefaults.each { key, value ->
     if (!project.hasProperty(key)) {
-        project.ext.set(key, value)
+        project.ext[key] = value
     }
 }
 
 bintray {
-    user         = project.ext.get('bintray.user')
-    key          = project.ext.get('bintray.apiKey')
-    dryRun       = project.ext.get('bintray.dryRun')
-    publish      = project.ext.get('bintray.publish')
+    user         = project.properties['bintray.user']
+    key          = project.properties['bintray.apiKey']
+    dryRun       = project.properties['bintray.dryRun']
+    publish      = project.properties['bintray.publish']
     publications = ['maven']
     pkg {
         repo = 'maven'
@@ -100,7 +100,7 @@ bintray {
         vcsUrl          = 'https://github.com/rafael-brandao/scalabuff-gradle-plugin.git'
         licenses        = ['MPL-2.0']
 
-        publicDownloadNumbers = project.ext.get('bintray.pkg.publicDownloadNumbers')
+        publicDownloadNumbers = project.properties['bintray.pkg.publicDownloadNumbers']
         labels                = ['scala', 'gradle', 'gradle-plugin', 'protobuff', 'scalabuff']
         version {
             desc       = project.description
