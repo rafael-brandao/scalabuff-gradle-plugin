@@ -1,6 +1,6 @@
 # Scalabuff Gradle Plugin
 
-[ ![Download](https://api.bintray.com/packages/rafael-brandao/maven/scalabuff-gradle-plugin/images/download.svg) ](https://bintray.com/rafael-brandao/maven/scalabuff-gradle-plugin/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/rafael-brandao/maven/scalabuff-gradle-plugin/images/download.svg) ](https://bintray.com/rafael-brandao/maven/scalabuff-gradle-plugin/_latestVersion) [![Build Status](https://travis-ci.org/rafael-brandao/scalabuff-gradle-plugin.svg?branch=master)](https://travis-ci.org/rafael-brandao/scalabuff-gradle-plugin)
 
 This is a Gradle plugin that acts as a wrapper of the [ScalaBuff](https://github.com/SandroGrzicic/ScalaBuff) tool.
 
